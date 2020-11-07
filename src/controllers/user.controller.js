@@ -18,7 +18,6 @@ const createUserController = () => {
 
 		checkUserExists(userRepository, email)
 			.then((result) => {
-				console.log(result)
 				if (!result) {
 					const user = userRepository.create({
 						name,
@@ -85,7 +84,6 @@ const createUserController = () => {
 				where: { email: email }
 			})
 				.then((result) => {
-					console.log(result)
 					if (result.length) {
 						resolve(true);
 					} else {
