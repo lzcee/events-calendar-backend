@@ -1,0 +1,9 @@
+{
+	"type": "sqlite",
+	"database": "src/database/data/eventsCalendar.sqlite3",
+	"logging": false,
+	"synchronize": true,
+	"entities": [
+		"src/database/entity/*.js"
+	]
+}

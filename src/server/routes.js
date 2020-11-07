@@ -1,10 +1,10 @@
 import { Router } from 'express';
+import createUserController from '../controllers/user.controller';
 
 const routes = Router();
 
-routes.get('/', (req, res) => {
-	console.log('Verb: Get -- Path: /');
-	res.json({ 'message': 'ok' });
-});
+const userController = createUserController();
+
+routes.post('/users', userController.createUser);
 
 export default routes;
