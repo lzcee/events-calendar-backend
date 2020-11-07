@@ -10,7 +10,7 @@ const userController = createUserController();
 const eventController = createEventController();
 
 routes.post('/users', userController.createUser);
-routes.get('/users/:id', auth.authorize, userController.findUser);
+routes.get('/users', userController.findUser);
 
 routes.post('/events', auth.authorize, eventController.createEvent);
 
