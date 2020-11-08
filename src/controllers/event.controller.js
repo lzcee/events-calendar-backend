@@ -27,7 +27,7 @@ const createEventController = () => {
 					eventRepository.save(event)
 						.then((result) => {
 							console.log('[Database] - New event saved');
-							res.json({ event: { id: result.id } });
+							res.json({ event: { id: result.id, description: result.description, startTime: result.startTime, endTime: result.endTime } });
 						})
 						.catch(err => {
 							console.log(`[Database] - Error: ${err}`);
@@ -83,7 +83,7 @@ const createEventController = () => {
 						.then((result) => {
 							console.log(result)
 							if (result) {
-								res.json({ message: 'Event updated' });
+								res.json({ event: { description, startTime, endTime }, message: 'Event updated' });
 							} else {
 								res.status(404).json({ message: 'Event not found' });
 							}
