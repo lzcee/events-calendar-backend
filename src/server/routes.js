@@ -13,5 +13,6 @@ routes.post('/users', userController.createUser);
 routes.get('/users', userController.findUser);
 
 routes.post('/events', auth.authorize, eventController.createEvent);
+routes.delete('/events/:id', auth.authorize, eventController.deleteEvent);
 
 export default routes;

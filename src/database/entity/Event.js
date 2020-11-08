@@ -9,12 +9,15 @@ export class Event {
 
 	@Column('text')
 	description = "";
-
+ 
 	@Column('int')
 	startTime = undefined;
 
 	@Column('int')
 	endTime = undefined;
+
+	@Column('boolean')
+	isActive = true;
 
 	@ManyToOne(() => User, user => user.events)
 	ownerUser = undefined;

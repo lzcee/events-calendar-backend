@@ -44,13 +44,34 @@ const createEventController = () => {
 
 	}
 
+	const deleteEvent = (req, res) => {
+		console.log('Verb: Delete -- Path: /events');
+		const eventId = parseInt(req.params.id);
+		const ownerUser = parseInt(req.body.ownerUser);
+
+		const eventRepository = getRepository(Event);
+
+		eventRepository.update({ id: eventId, ownerUser: ownerUser }, { isActive: false })
+			.then((result) => {
+				if (result) {
+					res.json({ message: 'Event deleted' });
+				} else {
+					res.status(404).json({ message: 'Event not found' });
+				}
+			}).catch((err) => {
+				console.log(`[Database] - ${err}`);
+				res.status(500).json({ message: 'Ops! Internal error' });
+			})
+	}
+
 	const checkPeriodAvailable = (eventRepository, startTime, endTime, ownerUser) => {
 		return new Promise((resolve, reject) => {
 			eventRepository.find({
 				where: {
 					ownerUser: ownerUser,
 					startTime: Between(startTime, endTime),
-					endTime: Between(startTime, endTime)
+					endTime: Between(startTime, endTime),
+					isActive: true
 				}
 			})
 				.then((result) => {
@@ -69,7 +90,8 @@ const createEventController = () => {
 
 
 	return {
-		createEvent
+		createEvent,
+		deleteEvent
 	}
 }
 
