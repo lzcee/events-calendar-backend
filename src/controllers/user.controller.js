@@ -63,10 +63,9 @@ const createUserController = () => {
 
 	const findUser = (req, res) => {
 		console.log('Verb: Get -- Path: /users');
-		const {
-			email,
-			password
-		} = req.body;
+		const authorizationHeaders = new Buffer.from(req.headers.authorization.split(' ')[1], 'base64').toString().split(':');
+		const email = authorizationHeaders[0];
+		const password = authorizationHeaders[1];
 
 		const userRepository = getRepository(User);
 
