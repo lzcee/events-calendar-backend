@@ -1,3 +1,4 @@
+import { hash } from 'bcrypt';
 import { getRepository, Between, Not } from 'typeorm';
 import { Event } from '../database/entity/Event';
 
@@ -103,11 +104,10 @@ const createEventController = () => {
 
 	const findEvent = (req, res) => {
 		console.log('Verb: Get -- Path: /events');
-		const ownerUser = req.body.ownerUser;
-
+		const ownerUser = parseInt(req.headers['owner-user']);
 		const eventRepository = getRepository(Event);
 
-		if (req.query.length) {
+		if (req.query !== {}) {
 			const {
 				startTime,
 				endTime,
@@ -127,7 +127,7 @@ const createEventController = () => {
 					if (result.length) {
 						res.json({ events: result });
 					} else {
-						res.status(400).json({ events: [] });
+						res.json({ events: [] });
 					}
 				})
 				.catch((err) => {
@@ -148,7 +148,7 @@ const createEventController = () => {
 					if (result) {
 						res.json({ events: result });
 					} else {
-						res.status(400).json({ events: [] });
+						res.json({ events: [] });
 					}
 				})
 				.catch((err) => {
