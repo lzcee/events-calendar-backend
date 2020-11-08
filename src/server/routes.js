@@ -15,5 +15,6 @@ routes.get('/users', userController.findUser);
 routes.post('/events', auth.authorize, eventController.createEvent);
 routes.delete('/events/:id', auth.authorize, eventController.deleteEvent);
 routes.put('/events/:id', auth.authorize, eventController.updateEvent);
+routes.get('/events/:id', auth.authorize, eventController.findEvent);
 
 export default routes;

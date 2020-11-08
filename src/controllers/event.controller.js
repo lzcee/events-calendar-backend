@@ -101,6 +101,64 @@ const createEventController = () => {
 			})
 	}
 
+	const findEvent = (req, res) => {
+		console.log('Verb: Get -- Path: /events');
+		const ownerUser = req.body.ownerUser;
+
+		const eventRepository = getRepository(Event);
+
+		if (req.query.length) {
+			const {
+				startTime,
+				endTime,
+			} = req.query;
+
+			eventRepository.find({
+				where: {
+					ownerUser: ownerUser,
+					startTime: Between(startTime, endTime),
+					isActive: true
+				},
+				order: {
+					startTime: "ASC"
+				}
+			})
+				.then((result) => {
+					if (result.length) {
+						res.json({ events: result });
+					} else {
+						res.status(400).json({ events: [] });
+					}
+				})
+				.catch((err) => {
+					console.log(`[Database] - ${err}`);
+					res.status(500).json({ message: 'Ops! Internal error' });
+				});
+		} else if (req.params.id) {
+			const eventId = parseInt(req.params.id);
+
+			eventRepository.findOne({
+				where: {
+					id: eventId,
+					ownerUser: ownerUser,
+					isActive: true
+				}
+			})
+				.then((result) => {
+					if (result) {
+						res.json({ events: result });
+					} else {
+						res.status(400).json({ events: [] });
+					}
+				})
+				.catch((err) => {
+					console.log(`[Database] - ${err}`);
+					res.status(500).json({ message: 'Ops! Internal error' });
+				});
+		}
+
+	}
+
 	const checkPeriodAvailable = (eventRepository, startTime, endTime, ownerUser, id = null) => {
 		return new Promise((resolve, reject) => {
 			eventRepository.find({
@@ -130,7 +188,8 @@ const createEventController = () => {
 	return {
 		createEvent,
 		deleteEvent,
-		updateEvent
+		updateEvent,
+		findEvent
 	}
 }
 
