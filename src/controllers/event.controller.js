@@ -1,4 +1,4 @@
-import { getRepository, Between } from 'typeorm';
+import { getRepository, Between, Not } from 'typeorm';
 import { Event } from '../database/entity/Event';
 
 const createEventController = () => {
@@ -64,14 +64,52 @@ const createEventController = () => {
 			})
 	}
 
-	const checkPeriodAvailable = (eventRepository, startTime, endTime, ownerUser) => {
+	const updateEvent = (req, res) => {
+		console.log('Verb: Put -- Path: /events');
+		const eventId = parseInt(req.params.id);
+		const {
+			description,
+			startTime,
+			endTime,
+			ownerUser
+		} = req.body;
+
+		const eventRepository = getRepository(Event);
+
+		checkPeriodAvailable(eventRepository, startTime, endTime, ownerUser, eventId)
+			.then((available) => {
+				if (available) {
+					eventRepository.update({ id: eventId, ownerUser: ownerUser, isActive: true }, { description, startTime, endTime })
+						.then((result) => {
+							console.log(result)
+							if (result) {
+								res.json({ message: 'Event updated' });
+							} else {
+								res.status(404).json({ message: 'Event not found' });
+							}
+						}).catch((err) => {
+							console.log(`[Database] - ${err}`);
+							res.status(500).json({ message: 'Ops! Internal error' });
+						})
+				} else {
+					res.status(500).json({ message: 'Ops! There is an event at this time' });
+				}
+			})
+			.catch(err => {
+				console.log(`[Database] - Error: ${err}`);
+				res.status(500).json({ message: 'Ops! Internal error' });
+			})
+	}
+
+	const checkPeriodAvailable = (eventRepository, startTime, endTime, ownerUser, id = null) => {
 		return new Promise((resolve, reject) => {
 			eventRepository.find({
 				where: {
 					ownerUser: ownerUser,
 					startTime: Between(startTime, endTime),
 					endTime: Between(startTime, endTime),
-					isActive: true
+					isActive: true,
+					id: Not(id)
 				}
 			})
 				.then((result) => {
@@ -91,7 +129,8 @@ const createEventController = () => {
 
 	return {
 		createEvent,
-		deleteEvent
+		deleteEvent,
+		updateEvent
 	}
 }
 
