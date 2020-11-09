@@ -1,4 +1,3 @@
-import { hash } from 'bcrypt';
 import { getRepository, Between, Not } from 'typeorm';
 import { Event } from '../database/entity/Event';
 
@@ -17,7 +16,7 @@ const createEventController = () => {
 
 		checkPeriodAvailable(eventRepository, startTime, endTime, ownerUser)
 			.then((available) => {
-				if (available) {
+				if (available) { 
 					const event = eventRepository.create({
 						description,
 						startTime,
@@ -35,7 +34,7 @@ const createEventController = () => {
 							res.status(500).json({ message: 'Ops! Internal error' });
 						});
 				} else {
-					res.status(500).json({ message: 'Ops! There is an event at this time' });
+					res.status(400).json({ message: 'Ops! There is an event at this time' });
 				}
 			})
 			.catch(err => {
@@ -159,7 +158,7 @@ const createEventController = () => {
 
 	}
 
-	const checkPeriodAvailable = (eventRepository, startTime, endTime, ownerUser, id = null) => {
+	const checkPeriodAvailable = (eventRepository, startTime, endTime, ownerUser, id = -1) => {
 		return new Promise((resolve, reject) => {
 			eventRepository.find({
 				where: {
@@ -171,15 +170,16 @@ const createEventController = () => {
 				}
 			})
 				.then((result) => {
-					if (result.length) {
+					if (result.length > 0) { 
 						resolve(false);
 					} else {
+						console.log(result)
 						resolve(true);
 					}
 				})
 				.catch((err) => {
 					console.log(`[Database] - ${err}`);
-					reject(false);
+					reject(true);
 				});
 		})
 	}
