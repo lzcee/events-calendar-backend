@@ -81,7 +81,6 @@ const createEventController = () => {
 				if (available) {
 					eventRepository.update({ id: eventId, ownerUser: ownerUser, isActive: true }, { description, startTime, endTime })
 						.then((result) => {
-							console.log(result)
 							if (result) {
 								res.json({ event: { description, startTime, endTime }, message: 'Event updated' });
 							} else {
@@ -173,7 +172,6 @@ const createEventController = () => {
 					if (result.length > 0) { 
 						resolve(false);
 					} else {
-						console.log(result)
 						resolve(true);
 					}
 				})
