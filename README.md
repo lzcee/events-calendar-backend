@@ -13,30 +13,38 @@ The front-end for this project can be found at this [repository](https://github.
 ## Routes
 
 **POST** Register a User
+
 `/users`
+
 *HEADERS*
 ```
 Content-type: application/json
 ```
 *BODY*
 ```
-	{
-		"name": "",
-		"email": "",
-		"password": ""
-	}
+{
+	"name": "",
+	"email": "",
+	"password": ""
+}
 ```
 
+
 **GET** User Login
+
 `/users`
+
 *HEADERS*
 ```
 Content-type: application/json
 Authorization: Basic {email:password}
 ```
 
+
 **POST** Create a Event
+
 `/events`
+
 *HEADERS*
 ```
 Content-type: application/json
@@ -44,16 +52,19 @@ x-access-token: TOKEN
 ```
 *BODY*
 ```
-	{
-		"description": "",
-		"startTime": timestamp,
-		"endTime": timestamp,
-		"ownerUser": user_id
-	}
+{
+	"description": "",
+	"startTime": timestamp,
+	"endTime": timestamp,
+	"ownerUser": user_id
+}
 ```
+
 
 **DELETE** Delete a Event
+
 `/events/:id`
+
 *HEADERS*
 ```
 Content-type: application/json
@@ -61,13 +72,16 @@ x-access-token: TOKEN
 ```
 *BODY*
 ```
-	{
-		"ownerUser": user_id
-	}
+{
+	"ownerUser": user_id
+}
 ```
+
 
 **PUT** Edit a Event
+
 `/events/:id`
+
 *HEADERS*
 ```
 Content-type: application/json
@@ -75,16 +89,19 @@ x-access-token: TOKEN
 ```
 *BODY*
 ```
-	{
-		"description": "",
-		"startTime": timestamp,
-		"endTime": timestamp,
-		"ownerUser": user_id
-	}
+{
+	"description": "",
+	"startTime": timestamp,
+	"endTime": timestamp,
+	"ownerUser": user_id
+}
 ```
 
+
 **GET** Get Events by Day
+
 `/events`
+
 *HEADERS*
 ```
 Content-type: application/json
