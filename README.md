@@ -30,6 +30,7 @@ Content-type: application/json
 ```
 
 
+------------
 **GET** User Login
 
 `/users`
@@ -41,6 +42,7 @@ Authorization: Basic {email:password}
 ```
 
 
+------------
 **POST** Create a Event
 
 `/events`
@@ -61,6 +63,7 @@ x-access-token: TOKEN
 ```
 
 
+------------
 **DELETE** Delete a Event
 
 `/events/:id`
@@ -78,6 +81,7 @@ x-access-token: TOKEN
 ```
 
 
+------------
 **PUT** Edit a Event
 
 `/events/:id`
@@ -98,6 +102,7 @@ x-access-token: TOKEN
 ```
 
 
+------------
 **GET** Get Events by Day
 
 `/events`
